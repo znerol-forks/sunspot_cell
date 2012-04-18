@@ -35,7 +35,7 @@ module SunspotCell
         def document_for(model)
           Sunspot::RichDocument.new(
             :id => Sunspot::Adapters::InstanceAdapter.adapt(model).index_id,
-            :type => Sunspot::Util.superclasses_for(model.class).map { |clazz| clazz.name }
+            :type => [model.class.name]
           )
         end
 
