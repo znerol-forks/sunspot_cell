@@ -21,7 +21,7 @@ module Sunspot
 
       @fields.each do |f|
         if f.name.to_s.include?("_attachment") and f.value.present?
-          params['fmap.content'] = "document_text"
+          params['fmap.content'] = "attr_content"
           if f.value.is_a?(Hash)
             params['stream.url']         = f.value[:file]
             params['stream.contentType'] = f.value[:type]
