@@ -22,7 +22,11 @@ module SunspotCell
             end
             if !docs_attach.empty?
               Sunspot::Util.Array(docs_attach).each do |document|
-                document.add(@connection)
+                begin
+                  document.add(@connection)
+                rescue RSolr::Error::Http => _e
+                  next
+                end
               end
             end
           rescue Exception => e
