@@ -9,7 +9,7 @@ module SunspotCell
           docs_attach = []
           docs_no_attach = []
           documents_arr.each do |document|
-            if document.contains_attachment?
+            if document.respond_to?(:contains_attachment?) && document.contains_attachment?
               docs_attach << document
             else
               docs_no_attach << document
