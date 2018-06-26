@@ -8,13 +8,6 @@ module SunspotCell
         sunspot_populate_document document, model
       end
 
-      def extract_value model, options = {}
-        if options.has_key?(:value)
-          options.delete(:value)
-        else
-          @data_extractor.value_for(model)
-        end
-      end
     end
 
   end

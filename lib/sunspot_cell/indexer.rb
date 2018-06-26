@@ -31,18 +31,6 @@ module SunspotCell
           end
         end
 
-        def prepare_full_update model
-          document = document_for_full_update(model)
-          setup = setup_for_object(model)
-          if boost = setup.document_boost_for(model)
-            document.attrs[:boost] = boost
-          end
-          setup.all_field_factories.each do |field_factory|
-            field_factory.populate_document(document, model)
-          end
-          document
-        end
-
         def document_for_full_update(model)
           Sunspot::RichDocument.new(
             id: Sunspot::Adapters::InstanceAdapter.adapt(model).index_id,

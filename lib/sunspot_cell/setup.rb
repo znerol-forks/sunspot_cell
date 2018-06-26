@@ -22,7 +22,7 @@ module SunspotCell
         #
         def add_attachment_field_factory(name, options = {}, &block)
           stored = options[:stored]
-          field_factory = Sunspot::FieldFactory::Attachment.new(name, Sunspot::Type::AttachmentType.instance, options, &block)
+          field_factory = Sunspot::FieldFactory::Static.new(name, Sunspot::Type::AttachmentType.instance, options, &block)
           @attachment_field_factories[name] = field_factory
           @attachment_field_factories_cache[field_factory.name] = field_factory
           if stored
@@ -51,10 +51,11 @@ module SunspotCell
         # Return all text fields
         #
         def all_text_fields
-          text_fields.concat(all_attachment_fields)
+          text_field_factories.concat(attachment_field_factories).map(&:build)
         end
 
         def all_attachment_fields
+          attachment_field_factories.map(&:build)
         end
 
         # Get the text field_factories associated with this setup as well as all inherited
