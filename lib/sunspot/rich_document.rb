@@ -18,6 +18,8 @@ module Sunspot
       }
 
       data = nil
+      id = ""
+      file_name = ""
 
       @fields.each do |f|
         if f.name.to_s.include?("_attachment") and f.value.present?
@@ -29,7 +31,10 @@ module Sunspot
             data = open(f.value).read rescue ""
           end
         else
+          id = f.value if f.name.to_s == "id"
+          file_name = f.value if f.name.to_s == "name_text"
           param_name = "literal.#{f.name.to_s}"
+          puts({ param_name: param_name, value: f.value })
           params[param_name] = [] unless params.has_key?(param_name)
           params[param_name] << f.value
         end
@@ -38,12 +43,14 @@ module Sunspot
         end
       end
 
-      connection.send_and_receive('update/extract', 
-        { :method => :post, 
-          :params => params, 
-          :data => data, 
+      connection.send_and_receive('update/extract',
+        { :method => :post,
+          :params => params,
+          :data => data,
           :headers => {"Content-Type" => ""}
         })
+    rescue
+      puts "Could not index file #{id} (#{file_name})"
     end
   end
 end
